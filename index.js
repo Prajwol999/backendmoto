@@ -44,6 +44,8 @@ app.use('/api/user/notifications', require('./routes/notificationRoute'));
 
 // Payment Routes
 app.use('/api/payment/esewa', esewaRoute);
+// Example in app.js or server.js
+app.use('/api/user', require('./routes/user/reviewRoute'));
 
 // Define the port
 const PORT = process.env.PORT || 5050;

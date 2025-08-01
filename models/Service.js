@@ -16,6 +16,19 @@ const ServiceSchema = new Schema(
         },
         duration: {
             type: String
+        },
+        // New fields for ratings and reviews
+        reviews: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Review'
+        }],
+        averageRating: {
+            type: Number,
+            default: 0
+        },
+        numberOfReviews: {
+            type: Number,
+            default: 0
         }
     },
     { timestamps: true }
