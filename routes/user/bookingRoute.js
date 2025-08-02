@@ -7,7 +7,9 @@ const {
     updateUserBooking, 
     deleteUserBooking, 
     confirmPayment,
-    verifyKhaltiPayment
+    verifyKhaltiPayment ,
+    getBookingById ,
+    getUserCompletedBookings
    
 } = require('../../controllers/user/bookingController');
 const { authenticateUser } = require('../../middlewares/authorizedUser');
@@ -25,5 +27,8 @@ router.route('/bookings/:id/pay')
 
 router.route('/bookings/verify-khalti')
     .post(authenticateUser, verifyKhaltiPayment);
+
+router.route('/bookings/:id').get(authenticateUser , getBookingById)
+router.route('/booking/completed').get(authenticateUser ,getUserCompletedBookings )
 
 module.exports = router;

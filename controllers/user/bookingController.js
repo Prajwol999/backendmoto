@@ -243,11 +243,56 @@ const verifyKhaltiPayment = async (req, res) => {
     }
 };
 
+const getUserCompletedBookings = async (req, res) => {
+    try {
+        const bookings = await Booking.find({ 
+            customer: req.user.id,
+            status: 'Completed' 
+        }).sort({ date: -1 });
+        res.json({ success: true, data: bookings });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+};
+
+/**
+ * @desc     Get a single booking by its ID
+ * @route    GET /api/user/bookings/:id
+ * @access   Private
+ */
+const getBookingById = async (req, res) => {
+    try {
+        // Corrected line: Removed .populate('service')
+        const booking = await Booking.findById(req.params.id);
+
+        if (!booking) {
+            return res.status(404).json({ success: false, message: 'Booking not found' });
+        }
+
+        // Ensure the booking belongs to the user requesting it
+        if (booking.customer.toString() !== req.user.id) {
+            return res.status(401).json({ success: false, message: 'User not authorized' });
+        }
+
+        // The 'booking' object will now be sent with the data as it is in the database
+        res.json({ success: true, data: booking });
+
+    } catch (error) {
+        console.error('Error fetching booking:', error);
+        res.status(500).json({ success: false, message: 'Server error while fetching booking.' });
+    }
+};
+
+
+
 module.exports = {
     getUserBookings,
     createBooking,
     updateUserBooking,
     deleteUserBooking,
     confirmPayment,
-    verifyKhaltiPayment
+    verifyKhaltiPayment ,
+getBookingById ,
+getUserCompletedBookings
 };

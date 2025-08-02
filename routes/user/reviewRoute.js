@@ -7,6 +7,6 @@ const { authenticateUser } = require('../../middlewares/authorizedUser');
 router.post('/reviews', authenticateUser, createReview);
 
 // @route   GET /api/user/reviews/service/:serviceId
-router.get('/reviews/service/:serviceId', getServiceReviews);
+router.get('/reviews/service/:serviceId', authenticateUser , getServiceReviews);
 
 module.exports = router;
